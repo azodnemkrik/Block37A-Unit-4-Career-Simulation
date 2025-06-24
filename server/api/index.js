@@ -4,14 +4,26 @@ const {
     fetchItems,
     fetchSingleItem,
     fetchItemReviews,
-    fetchSpecificReview
+    fetchSpecificReview,
 } = require('../db/items')
+
+const {
+    createUser
+} = require('../db/users')
 
 //define api routes here
 // app.use('/users', require('../db/users'))
 
 
 // CREATE
+app.post('/auth/register', async (req,res,next) => {
+    try {
+        res.send(await createUser(req.body))
+    } catch (error) {
+        next(error)
+    }
+})
+
 
 // READ
 app.get('/items', async (req,res,next) => {
@@ -54,14 +66,14 @@ app.get('/items/:itemId/reviews/:reviewId', async (req,res,next) => {
 module.exports = app
 
 /*
-POST /api/auth/register
+-->POST /api/auth/register
 POST /api/auth/login
 GET /api/auth/me 🔒
  
 --GET /api/items
 --GET /api/items/:itemId
 --GET /api/items/:itemId/reviews
--->GET /api/items/:itemId/reviews/:reviewId
+--GET /api/items/:itemId/reviews/:reviewId
 
 POST /api/items/:itemId/reviews 🔒
 GET /api/reviews/me 🔒xw
