@@ -25,7 +25,7 @@ const createUser = async (user) => {
 		RETURNING *
 	`
 	// GENERATE RESPONSE
-	const response = await client.query(SQL, [uuidv4() , user.username , user.password , user.is_admin ])
+	const response = await client.query(SQL, [ uuidv4() , user.username , user.password , user.is_admin ])
 	return response.rows[0]
 }
 
@@ -33,7 +33,7 @@ const createUser = async (user) => {
 const createItem = async (item) => {
 	// Check for spaces in itemname
 	if(!item.name.trim()){
-		throw Error ('Must have a valid itemname')
+		throw Error ('Must have a valid item name')
 	}
 
 	// GENERATE SQL TO PASS
@@ -45,10 +45,27 @@ const createItem = async (item) => {
 		RETURNING *
 	`
 	// GENERATE RESPONSE
-	const response = await client.query(SQL, [uuidv4() , item.name , item.description ])
+	const response = await client.query(SQL , [ uuidv4() , item.name , item.description ])
 	return response.rows[0]
 }
 
+
+
+// CREATE REVIEW
+const createReview = async (review) => {
+
+	// GENERATE SQL TO PASS
+	const SQL = `
+		INSERT INTO reviews
+		(id, user_id, item_id, rating)
+		VALUES
+		($1, $2, $3, $4)
+		RETURNING *
+	`
+	// GENERATE RESPONSE
+	const response = await client.query(SQL , [ uuidv4() , review.user_id , review.item_id, review.rating ])
+	return response.rows[0]
+}
 
 
 const seed = async () => {
@@ -72,7 +89,8 @@ const seed = async () => {
 			id UUID PRIMARY KEY,
 			user_id UUID REFERENCES users(id) NOT NULL,
 			item_id UUID REFERENCES items(id) NOT NULL,
-			review VARCHAR(200) NOT NULL
+			rating INTEGER DEFAULT 3 NOT NULL,
+			CONSTRAINT no_duplicate_items_per_user UNIQUE(user_id, item_id)
 		);
 	`
 	await client.query(SQL)
@@ -97,6 +115,28 @@ const seed = async () => {
 		createItem({ name: 'LEGO Razor Crest #75331', description:'Imagine life as a galactic bounty hunter as you build and display a LEGO® Star Wars™ Ultimate Collector Series version of The Razor Crest (75331) starship. Measuring over 28 in. (72 cm) long, it is packed with authentic details that reference memorable Star Wars: The Mandalorian moments.' }),
 		createItem({ name: 'LEGO AT-AT #75313', description:'This is the AT-AT (75313) that every LEGO® Star Wars™ fan has been waiting for. This epic Ultimate Collector Series build-and-display model features posable legs and head, cannons with a realistic recoil action, rotating cannons, bomb-drop hatch and a hook to attach to Luke Skywalker\'s line, just like in the Battle of Hoth.' })
 	])
+
+	// CREATE START REVIEWS
+	const [] = await Promise.all([
+		createReview({ user_id: kirk.id, item_id:r2d2.id, rating: 2}),
+		createReview({ user_id: kirk.id, item_id:voltron.id, rating: 4}),
+		createReview({ user_id: kirk.id, item_id:falcon.id, rating: 5}),
+		createReview({ user_id: kirk.id, item_id:razorcrest.id, rating: 5}),
+		createReview({ user_id: kathy.id, item_id:walle.id, rating: 4}),
+		createReview({ user_id: kathy.id, item_id:landspeeder.id, rating: 3}),
+		createReview({ user_id: devin.id, item_id:falcon.id, rating: 4}),
+		createReview({ user_id: devin.id, item_id:atat.id, rating: 4}),
+		createReview({ user_id: mae.id, item_id:voltron.id, rating: 5}),
+		createReview({ user_id: mae.id, item_id:walle.id, rating: 5}),
+		createReview({ user_id: mae.id, item_id:r2d2.id, rating: 4}),
+		createReview({ user_id: haleigh.id, item_id:walle.id, rating: 5}),
+	])
+		/*
+			id UUID PRIMARY KEY,
+			user_id UUID REFERENCES users(id) NOT NULL,
+			item_id UUID REFERENCES items(id) NOT NULL,
+			rating INTEGER DEFAULT 3 NOT NULL,
+		*/ 
 
 };
 
