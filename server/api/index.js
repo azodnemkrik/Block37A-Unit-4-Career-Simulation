@@ -3,7 +3,8 @@ const app = express.Router()
 const {
     fetchItems,
     fetchSingleItem,
-    fetchItemReviews
+    fetchItemReviews,
+    fetchSpecificReview
 } = require('../db/items')
 
 //define api routes here
@@ -11,9 +12,8 @@ const {
 
 
 // CREATE
+
 // READ
-// UPDDATE
-// DELETE
 app.get('/items', async (req,res,next) => {
     try {
         res.send(await fetchItems())
@@ -38,7 +38,16 @@ app.get('/items/:itemId/reviews', async (req,res,next) => {
     }
 })
 
+app.get('/items/:itemId/reviews/:reviewId', async (req,res,next) => {
+    try {
+        res.send(await fetchSpecificReview(req.params))
+    } catch (error) {
+        next(error)
+    }
+})
 
+// UPDDATE
+// DELETE
 
 
 
@@ -51,8 +60,8 @@ GET /api/auth/me 🔒
  
 --GET /api/items
 --GET /api/items/:itemId
--->GET /api/items/:itemId/reviews
-GET /api/items/:itemId/reviews/:reviewId
+--GET /api/items/:itemId/reviews
+-->GET /api/items/:itemId/reviews/:reviewId
 
 POST /api/items/:itemId/reviews 🔒
 GET /api/reviews/me 🔒xw
