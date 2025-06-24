@@ -27,7 +27,12 @@ const init = async () => {
 	await client.connect();
 	console.log('SUCCESS – Connected to database');
 
-	await seed();
+
+    // SYNC is variable in package.json
+    // if SYNC, then re-seed the DB
+    if(process.env.SYNC){
+        await seed()
+    }	
 
 	app.listen(PORT, () => {
 		console.log(`SUCCESS – listening on port ${PORT}`)

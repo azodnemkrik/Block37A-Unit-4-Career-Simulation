@@ -22,7 +22,7 @@ const createItem = async (item) => {
 	return response.rows[0]
 }
 
-// READ ITEM
+// READ ITEMS
 const fetchItems = async () => {
 	const SQL = `
 		SELECT *
@@ -32,8 +32,19 @@ const fetchItems = async () => {
 	return response.rows
 }
 
+const fetchSingleItem = async (itemId) => {
+	const SQL = `
+		SELECT *
+		FROM items
+		WHERE id = $1
+	`
+	const response = await client.query(SQL, [itemId])
+	return response.rows[0]
+}
+
 module.exports = {
     createItem,
-	fetchItems
+	fetchItems,
+	fetchSingleItem
 }
 
