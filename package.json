@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev:sync" : "SYNC=true nodemon server",
-    "start:dev": "nodemon server"
+    "start:dev": "JWT=lychee nodemon server",
+    "start:dev:sync" : "SYNC=true JWT=lychee nodemon server"
   },
   "keywords": [],
   "author": "",

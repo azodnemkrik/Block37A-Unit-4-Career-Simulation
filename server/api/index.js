@@ -8,7 +8,8 @@ const {
 } = require('../db/items')
 
 const {
-    createUser
+    createUser,
+    authenticate
 } = require('../db/users')
 
 //define api routes here
@@ -19,6 +20,15 @@ const {
 app.post('/auth/register', async (req,res,next) => {
     try {
         res.send(await createUser(req.body))
+    } catch (error) {
+        next(error)
+    }
+})
+
+app.post('/auth/login' , async (req,res,next) => {
+    try {
+        const token = await authenticate(req.body)
+        res.send(token)
     } catch (error) {
         next(error)
     }
@@ -66,8 +76,8 @@ app.get('/items/:itemId/reviews/:reviewId', async (req,res,next) => {
 module.exports = app
 
 /*
--->POST /api/auth/register
-POST /api/auth/login
+--POST /api/auth/register
+-->POST /api/auth/login
 GET /api/auth/me 🔒
  
 --GET /api/items
