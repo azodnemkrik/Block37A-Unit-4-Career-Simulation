@@ -2,7 +2,8 @@ const express = require("express")
 const app = express.Router()
 const {
     fetchItems,
-    fetchSingleItem
+    fetchSingleItem,
+    fetchItemReviews
 } = require('../db/items')
 
 //define api routes here
@@ -29,7 +30,13 @@ app.get('/items/:itemId', async (req,res,next) => {
     }
 })
 
-
+app.get('/items/:itemId/reviews', async (req,res,next) => {
+    try {
+        res.send(await fetchItemReviews(req.params.itemId))
+    } catch (error) {
+        next(error)
+    }
+})
 
 
 
@@ -44,7 +51,7 @@ GET /api/auth/me 🔒
  
 --GET /api/items
 --GET /api/items/:itemId
-GET /api/items/:itemId/reviews
+-->GET /api/items/:itemId/reviews
 GET /api/items/:itemId/reviews/:reviewId
 
 POST /api/items/:itemId/reviews 🔒

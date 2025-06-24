@@ -42,9 +42,22 @@ const fetchSingleItem = async (itemId) => {
 	return response.rows[0]
 }
 
+const fetchItemReviews = async (itemId) => {
+	const SQL = `
+		SELECT *
+		FROM reviews
+		WHERE item_id = $1
+	`
+	const response = await client.query(SQL, [itemId])
+	return response.rows
+}
+
+// GET /api/items/:itemId/reviews
+
 module.exports = {
     createItem,
 	fetchItems,
-	fetchSingleItem
+	fetchSingleItem,
+	fetchItemReviews
 }
 
