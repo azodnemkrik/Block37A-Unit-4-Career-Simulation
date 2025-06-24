@@ -1,9 +1,13 @@
 const client = require('./client')
 const bcrypt = require('bcrypt')
+const { createUser } = require('./users')
+const { createItem } = require('./items')
+const { createReview } = require('./reviews')
 const { v4 } = require('uuid')
 const uuidv4 = v4
 
-// CREATE USER
+// CREATE USER (moved)
+/*
 const createUser = async (user) => {
 	// Check for spaces in username
 	if(!user.username.trim()){
@@ -28,8 +32,10 @@ const createUser = async (user) => {
 	const response = await client.query(SQL, [ uuidv4() , user.username , user.password , user.is_admin ])
 	return response.rows[0]
 }
+*/
 
-// CREATE ITEM
+// CREATE ITEM (moved)
+/*
 const createItem = async (item) => {
 	// Check for spaces in itemname
 	if(!item.name.trim()){
@@ -48,10 +54,10 @@ const createItem = async (item) => {
 	const response = await client.query(SQL , [ uuidv4() , item.name , item.description ])
 	return response.rows[0]
 }
-
-
+*/
 
 // CREATE REVIEW
+/*
 const createReview = async (review) => {
 
 	// GENERATE SQL TO PASS
@@ -66,7 +72,18 @@ const createReview = async (review) => {
 	const response = await client.query(SQL , [ uuidv4() , review.user_id , review.item_id, review.rating ])
 	return response.rows[0]
 }
+*/
 
+// READ ITEMS (FETCH)
+/*
+const fetchItems = async () => {
+	const SQL = `
+		SELECT *
+		FROM items
+	`
+	const response = await client.query(SQL)
+}
+*/
 
 const seed = async () => {
 	// console.log("add logic to create and seed tables")
@@ -94,7 +111,7 @@ const seed = async () => {
 		);
 	`
 	await client.query(SQL)
-	console.log("Created tables")
+	console.log("SUCCESS – Created tables")
 	
 	// CREATE STARTER USERS
 	const [kirk, kathy, mae, devin, haleigh] = await Promise.all([
@@ -131,12 +148,8 @@ const seed = async () => {
 		createReview({ user_id: mae.id, item_id:r2d2.id, rating: 4}),
 		createReview({ user_id: haleigh.id, item_id:walle.id, rating: 5}),
 	])
-		/*
-			id UUID PRIMARY KEY,
-			user_id UUID REFERENCES users(id) NOT NULL,
-			item_id UUID REFERENCES items(id) NOT NULL,
-			rating INTEGER DEFAULT 3 NOT NULL,
-		*/ 
+
+    console.log('SUCCESS – Seeded data')
 
 };
 
