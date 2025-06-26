@@ -1,17 +1,14 @@
 const express = require('express')
 const app = express.Router()
-const {
-    createUser,
-    authenticate
-} = require('../db/users')
+const { isLoggedIn } = require('./middleware')
+const { editMySingleReview } = require('../db/reviews')
 
-app.get('/', async(req,res,next)=> {
+app.put('/:userId/reviews/:reviewId', isLoggedIn, async(req,res,next)=> {
     try {
-        res.send("inside of GET /api/users route!")
+        res.send(await editMySingleReview(req.params))
     } catch (error) {
         next(error)
     }
 })
-
 
 module.exports = app

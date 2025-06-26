@@ -30,6 +30,7 @@ const createUser = async (user) => {
 	return response.rows[0]
 }
 
+
 module.exports = {
     createUser
 }

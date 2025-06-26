@@ -49,9 +49,21 @@ const fetchMyReviews = async (user) => {
 
 }
 
+const editMySingleReview = async (review) => {
+	const SQL = `
+		UPDATE reviews
+		SET rating = $1
+		WHERE id = $2
+		RETURNING *
+	`
+	const response = await client.query(SQL , [ review.rating , review.id])
+	return response.rows[0]
+} 
+
 module.exports = {
     createReview,
 	fetchItemReviews,
 	fetchSpecificReview,
-	fetchMyReviews
+	fetchMyReviews,
+	editMySingleReview
 }

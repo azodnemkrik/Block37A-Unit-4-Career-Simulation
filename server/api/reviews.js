@@ -1,11 +1,10 @@
 const express = require('express')
 const app = express.Router()
 const { isLoggedIn } = require('./middleware')
-const { fetchMyReviews } = require('../db/reviews')
 
 app.get('/me', isLoggedIn, async(req,res,next)=> {
     try {
-        res.send(await fetchMyReviews(req.user))
+        res.send(await fetchSpecificReview(req.params.itemId))
     } catch (error) {
         next(error)
     }
