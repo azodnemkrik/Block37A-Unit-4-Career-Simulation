@@ -12,7 +12,7 @@ module.exports = app
 /*
 --POST /api/auth/register
 --POST /api/auth/login
--->GET /api/auth/me 🔒
+--GET /api/auth/me 🔒
  
 --GET /api/items
 --GET /api/items/:itemId
