@@ -1,0 +1,36 @@
+const express = require('express')
+const app = express.Router()
+const { createUser } = require('../db/users')
+const { authenticate } = require('../db/auth')
+// const {
+//     createUser,
+//     authenticate
+// } = require('../db/users')
+
+app.post('/register', async (req,res,next) => {
+    try {
+        res.send(await createUser(req.body))
+    } catch (error) {
+        next(error)
+    }
+})
+
+app.post('/login' , async (req,res,next) => {
+    try {
+        const token = await authenticate(req.body)
+        res.send(token)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+app.get('/me', async(req,res,next)=> {
+    try {
+        res.send("inside of GET /api route!")
+    } catch (error) {
+        next(error)
+    }
+})
+
+module.exports = app

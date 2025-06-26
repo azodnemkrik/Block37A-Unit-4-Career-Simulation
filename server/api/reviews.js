@@ -1,13 +1,9 @@
 const express = require('express')
 const app = express.Router()
-const {
-    createUser,
-    authenticate
-} = require('../db/users')
 
 app.get('/', async(req,res,next)=> {
     try {
-        res.send("inside of GET /api/users route!")
+        res.send("inside of GET /api/reviews route!")
     } catch (error) {
         next(error)
     }
