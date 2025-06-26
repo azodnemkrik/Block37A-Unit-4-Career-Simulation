@@ -6,6 +6,8 @@ const {
     fetchItemReviews,
     fetchSpecificReview,
 } = require('../db/items')
+const { createReview } = require('../db/reviews')
+const { isLoggedIn } = require('./middleware')
 
 app.get('/', async (req,res,next) => {
     try {
@@ -38,6 +40,21 @@ app.get('/:itemId/reviews/:reviewId', async (req,res,next) => {
         next(error)
     }
 })
+
+
+app.post('/:itemId/reviews', isLoggedIn, async (req,res,next) => {
+    try {
+        const review = {
+            user_id: req.body.user_id,
+            item_id: req.params.itemId,
+            rating: req.body.rating 
+        }
+        res.send(await createReview(review))
+    } catch (error) {
+        next(error)
+    }
+})
+// review.user_id , review.item_id, review.rating
 
 
 module.exports = app

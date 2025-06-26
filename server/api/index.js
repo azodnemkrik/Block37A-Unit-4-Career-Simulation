@@ -19,7 +19,7 @@ module.exports = app
 --GET /api/items/:itemId/reviews
 --GET /api/items/:itemId/reviews/:reviewId
 
-POST /api/items/:itemId/reviews 🔒
+--POST /api/items/:itemId/reviews 🔒
 GET /api/reviews/me 🔒
 PUT /api/users/:userId/reviews/:reviewId 🔒
 DELETE /api/users/:userId/reviews/:reviewId 🔒
