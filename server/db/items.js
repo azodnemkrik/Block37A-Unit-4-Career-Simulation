@@ -42,32 +42,30 @@ const fetchSingleItem = async (itemId) => {
 	return response.rows[0]
 }
 
-const fetchItemReviews = async (itemId) => {
-	const SQL = `
-		SELECT *
-		FROM reviews
-		WHERE item_id = $1
-	`
-	const response = await client.query(SQL, [itemId])
-	return response.rows
-}
+// const fetchItemReviews = async (itemId) => {
+// 	const SQL = `
+// 		SELECT *
+// 		FROM reviews
+// 		WHERE item_id = $1
+// 	`
+// 	const response = await client.query(SQL, [itemId])
+// 	return response.rows
+// }
 
-const fetchSpecificReview = async (item) => {
-	const SQL = `
-		SELECT *
-		FROM reviews
-		WHERE item_id = $1
-		AND id = $2
-	`
-	const response = await client.query(SQL, [item.itemId, item.reviewId])
-	return response.rows[0]
-}
+// const fetchSpecificReview = async (item) => {
+// 	const SQL = `
+// 		SELECT *
+// 		FROM reviews
+// 		WHERE item_id = $1
+// 		AND id = $2
+// 	`
+// 	const response = await client.query(SQL, [item.itemId, item.reviewId])
+// 	return response.rows[0]
+// }
 
 module.exports = {
     createItem,
 	fetchItems,
-	fetchSingleItem,
-	fetchItemReviews,
-	fetchSpecificReview
+	fetchSingleItem
 }
 

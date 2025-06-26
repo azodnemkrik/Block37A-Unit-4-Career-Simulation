@@ -17,6 +17,41 @@ const createReview = async (review) => {
 	return response.rows[0]
 }
 
+const fetchItemReviews = async (itemId) => {
+	const SQL = `
+		SELECT *
+		FROM reviews
+		WHERE item_id = $1
+	`
+	const response = await client.query(SQL, [itemId])
+	return response.rows
+}
+
+const fetchSpecificReview = async (item) => {
+	const SQL = `
+		SELECT *
+		FROM reviews
+		WHERE item_id = $1
+		AND id = $2
+	`
+	const response = await client.query(SQL, [item.itemId, item.reviewId])
+	return response.rows[0]
+}
+
+const fetchMyReviews = async (user) => {
+	const SQL = `
+		SELECT *
+		FROM reviews
+		WHERE user_id = $1
+	`
+	const response = await client.query(SQL, [user.id])
+	return response.rows
+
+}
+
 module.exports = {
-    createReview
+    createReview,
+	fetchItemReviews,
+	fetchSpecificReview,
+	fetchMyReviews
 }
