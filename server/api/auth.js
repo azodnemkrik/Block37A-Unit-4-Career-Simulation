@@ -2,10 +2,7 @@ const express = require('express')
 const app = express.Router()
 const { createUser } = require('../db/users')
 const { authenticate } = require('../db/auth')
-// const {
-//     createUser,
-//     authenticate
-// } = require('../db/users')
+const { isLoggedIn } = require('./middleware')
 
 app.post('/register', async (req,res,next) => {
     try {
@@ -25,9 +22,9 @@ app.post('/login' , async (req,res,next) => {
 })
 
 
-app.get('/me', async(req,res,next)=> {
+app.get('/me', isLoggedIn,  async(req,res,next)=> {
     try {
-        res.send("inside of GET /api route!")
+        res.send(req.user)
     } catch (error) {
         next(error)
     }
